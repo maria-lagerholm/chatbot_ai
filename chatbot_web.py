@@ -1,28 +1,3 @@
-
-hide_streamlit_style = """
-            <style>
-            [data-testid="stToolbar"] {visibility: hidden !important;}
-            footer {visibility: hidden !important;}
-            </style>
-            """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
-# Style the header
-st.markdown("""
-<style>
-    .reportview-container h1 {
-        font-size: 1.5em;
-        color: #0e3b62; 
-        text-align: center;
-        padding: 1em;
-        background: #f1f1f1; 
-        border-radius: 10px;
-        border: 1px solid #ccc;
-        box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
-    }
-</style>
-""", unsafe_allow_html=True)
-
 import streamlit as st
 from llama_index import VectorStoreIndex, ServiceContext, Document
 from llama_index.llms import OpenAI
@@ -40,6 +15,30 @@ from llama_index.llms import OpenAI
 from llama_index.text_splitter import TokenTextSplitter
 from llama_index.node_parser import SimpleNodeParser
 
+
+hide_streamlit_style = """
+<style>
+    [data-testid="stToolbar"] {visibility: hidden !important;}
+    footer {visibility: hidden !important;}
+</style>
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+# Style the header
+st.markdown("""
+<style>
+    .reportview-container h1 {
+        font-size: 1.5em;
+        color: #0e3b62; 
+        text-align: center;
+        padding: 1em;
+        background: #f1f1f1; 
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+    }
+</style>
+""", unsafe_allow_html=True)
 
 memory = ChatMemoryBuffer.from_defaults()#token_limit=1024)
 
