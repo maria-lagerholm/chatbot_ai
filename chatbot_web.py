@@ -23,8 +23,16 @@ memory = ChatMemoryBuffer.from_defaults()#token_limit=1024)
 # Initialize message history
 openai.api_key = st.secrets.openai_key
 
+# Hide hamburger menu and footer
+hide_streamlit_style = """
+<style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+</style>
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-
+# Style the header
 st.markdown("""
 <style>
     .reportview-container h1 {
