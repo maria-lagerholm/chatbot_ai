@@ -7,8 +7,6 @@ from llama_index import BeautifulSoupWebReader
 from llama_index.memory import ChatMemoryBuffer
 from langdetect import detect
 
-
-
 from pathlib import Path
 from llama_index import download_loader
 
@@ -36,8 +34,16 @@ if "messages" not in st.session_state.keys(): # Initialize the chat message hist
 
 # Suggested questions
 suggested_questions = [
+    "Kan ni berätta mer om de tjänster ni erbjuder?",
     "Vilka typer av besiktningar erbjuder ni?",
-    "Hur går en fuktutredning till, och hur lång tid tar det vanligtvis?",
+    "Vad är en statusbesiktning?"
+    "Vad är fortlöpande besiktning?",
+    "Vad är Kontroll- och slutbesiktning?",
+    "Vad är en kompletterande besiktning?",
+    "Vad är en efterbesiktning?",
+    "Vad är en garantibesiktning?",
+    "Vad är en särskild besiktning?",
+    "Misstänker du att du har fukt- eller vattenskador?",
     "Vad innefattar era tjänster inom projektledning?",
     "Kan jag boka en termografering genom er, och vad bör jag förvänta mig av denna tjänst?",
     "Vilka är era skyldigheter som kontrollansvarig i ett byggprojekt?",
