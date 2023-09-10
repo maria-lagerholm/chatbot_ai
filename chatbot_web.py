@@ -1,3 +1,5 @@
+
+
 import streamlit as st
 from llama_index import VectorStoreIndex, ServiceContext, Document
 from llama_index.llms import OpenAI
@@ -22,34 +24,52 @@ memory = ChatMemoryBuffer.from_defaults()#token_limit=1024)
 openai.api_key = st.secrets.openai_key
 
 
-st.header("Chatta med vår AI-assistent")
 
-
-if "messages" not in st.session_state.keys(): # Initialize the chat message history
-    st.session_state.messages = [
-        {"role": "assistant", "content": "Hej! Hur kan jag hjälpa dig?"}
-    ]
-
-
+st.markdown("""
+<style>
+    .reportview-container h1 {
+        font-size: 1.5em;
+        color: #0e3b62; 
+        text-align: center;
+        padding: 1em;
+        background: #f1f1f1; 
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # Suggested questions
 suggested_questions = [
     "Kan ni berätta mer om de tjänster ni erbjuder?",
     "Vilka typer av besiktningar erbjuder ni?",
     "Vad är en statusbesiktning?"
-    "Vad är fortlöpande besiktning?",
-    "Vad är Kontroll- och slutbesiktning?",
-    "Vad är en kompletterande besiktning?",
-    "Vad är en efterbesiktning?",
-    "Vad är en garantibesiktning?",
-    "Vad är en särskild besiktning?",
-    "Misstänker du att du har fukt- eller vattenskador?",
-    "Vad innefattar era tjänster inom projektledning?",
-    "Kan jag boka en termografering genom er, och vad bör jag förvänta mig av denna tjänst?",
-    "Vilka är era skyldigheter som kontrollansvarig i ett byggprojekt?",
-    "Hur kan jag förbereda mig inför en lufttäthetsmätning?",
-    "Vilka verktyg och metoder använder ni för att utföra en fuktutredning?"
+    
 ]
+
+
+st.header("Chatta med vår AI-assistent")
+cols = st.columns(2)
+for idx, question in enumerate(suggested_questions):
+    if idx % 2 == 0:
+        col = cols[0]
+    else:
+        col = cols[1]
+    
+    if col.button(question, key=f"main_{idx}"):
+        st.session_state.messages.append({"role": "user", "content": question})
+
+
+if "messages" not in st.session_state.keys(): # Initialize the chat message history
+
+    st.session_state.messages = [
+        {"role": "assistant", "content": "Hej! Hur kan jag hjälpa dig?"}
+    ]
+
+
+
+
 
 
 
@@ -132,16 +152,15 @@ def validate_response(response):
     return response
 
 
-st.sidebar.header("Föreslagna frågor")
-for idx, question in enumerate(suggested_questions):
-    if st.sidebar.button(question, key=f"main_{idx}"):
-        st.session_state.messages.append({"role": "user", "content": question})
+
+
 
 # Display the chat history
 for message in st.session_state.messages: 
     with st.spinner("Vänligen vänta..."):
         with st.chat_message(message["role"]):
             st.write(message["content"])
+
 
 if prompt := st.chat_input("Din fråga"):
     with st.spinner("Vänligen vänta..."): 
