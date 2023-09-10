@@ -16,18 +16,12 @@ from llama_index.text_splitter import TokenTextSplitter
 from llama_index.node_parser import SimpleNodeParser
 
 
-hide_st_style = """
+st.markdown("""
             <style>
             #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
             header {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_st_style, unsafe_allow_html=True)
-
-# Style the header
-st.markdown("""
-<style>
+            
     .reportview-container h1 {
         font-size: 1.5em;
         color: #0e3b62; 
@@ -40,6 +34,9 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+
+st.write('<style>div.block-container{padding-top:0rem;}</style>', unsafe_allow_html=True)
+
 
 memory = ChatMemoryBuffer.from_defaults()#token_limit=1024)
 
