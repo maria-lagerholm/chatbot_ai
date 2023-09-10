@@ -1,5 +1,7 @@
-streamlit
-openai
-llama-index
-nltk
-langdetect
+python==3.9.*
+
+
+streamlit==1.26.0
+openai==0.28.0
+llama==1.4.0
+nltk==3.8.1
