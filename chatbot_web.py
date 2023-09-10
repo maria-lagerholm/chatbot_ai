@@ -16,13 +16,14 @@ from llama_index.text_splitter import TokenTextSplitter
 from llama_index.node_parser import SimpleNodeParser
 
 
-hide_streamlit_style = """
-<style>
-    [data-testid="stToolbar"] {visibility: hidden !important;}
-    footer {visibility: hidden !important;}
-</style>
-"""
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
 
 # Style the header
 st.markdown("""
