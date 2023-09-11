@@ -115,9 +115,9 @@ def load_data():
             urls_data = [
                 'https://www.allabolag.se/5569418576/byggok-ab', 
                 'https://www.merinfo.se/foretag/Byggok-AB-5569418576/2k3vyvk-1ahbo', 
-                'https://www.hitta.se/byggok+ab/kinna/llguyantu', 
-                'https://www.bolagsfakta.se/5569418576-Byggok_AB', 
-                'https://www.ratsit.se/5569418576-Byggok_AB'
+                #'https://www.hitta.se/byggok+ab/kinna/llguyantu', 
+                #'https://www.bolagsfakta.se/5569418576-Byggok_AB', 
+                #'https://www.ratsit.se/5569418576-Byggok_AB'
             ]
             
             docs_with_urls = []
