@@ -15,6 +15,15 @@ from llama_index.llms import OpenAI
 from llama_index.text_splitter import TokenTextSplitter
 from llama_index.node_parser import SimpleNodeParser
 
+import spacy
+
+nlp = spacy.load('sv_core_news_sm')
+
+#Load the list of construction terms into a spaCy Doc object
+with open('construction_terms.txt', 'r', encoding='utf-8') as file:
+    construction_terms_text = file.read()
+construction_terms_doc = nlp(construction_terms_text)
+
 
 st.markdown("""
             <style>
@@ -35,7 +44,13 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+
 st.write('<style>div.block-container{padding-top:0rem;}</style>', unsafe_allow_html=True)
+
+
+
+
+
 
 
 memory = ChatMemoryBuffer.from_defaults()#token_limit=1024)
@@ -145,7 +160,7 @@ def validate_response(response):
     default_response = "Hej, jag är en AI-assistent. Hur kan jag hjälpa dig?"
 
     if response.startswith(default_response):
-        response = response[len(default_response):]  # Remove the default message from the response
+        response = response[len(default_response):] 
 
     if any(char.isdigit() for char in response):  
         response += " Observera: Jag är en AI-chatbot som ger en grundläggande översikt över företaget. Informationen kan variera och vara opålitlig."
@@ -153,7 +168,13 @@ def validate_response(response):
     # Check if the response is in Swedish
     if detect(response) != 'sv':
         response = "Jag kan tyvärr endast svara på frågor på svenska. Vänligen ställ din fråga på svenska."
-
+        
+    # Check semantic similarity with the list of construction terms
+    response_doc = nlp(response)
+    similarity_score = construction_terms_doc.similarity(response_doc)
+    if similarity_score < 0.75:  # Adjust threshold as needed
+        response = "Jag är här för att svara på frågor som rör bygg och konstruktion. Vänligen ställ en relevant fråga."
+    
     return response
 
 
