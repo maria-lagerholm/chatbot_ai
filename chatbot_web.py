@@ -15,6 +15,8 @@ from llama_index.llms import OpenAI
 from llama_index.text_splitter import TokenTextSplitter
 from llama_index.node_parser import SimpleNodeParser
 
+
+import os 
 import spacy
 
 if not os.path.exists(spacy.util.get_package_path("sv_core_news_sm")):
