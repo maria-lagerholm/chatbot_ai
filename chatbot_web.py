@@ -17,12 +17,18 @@ from llama_index.node_parser import SimpleNodeParser
 
 
 import os 
-import spacy
 
-if not os.path.exists(spacy.util.get_package_path("sv_core_news_sm")):
+# Check if spacy is installed
+try:
+    import spacy
+except ModuleNotFoundError:
+    os.system("pip install spacy")
+
+# Download the model if not already installed
+try:
+    nlp = spacy.load("sv_core_news_sm")
+except IOError:
     os.system("python -m spacy download sv_core_news_sm")
-
-nlp = spacy.load('sv_core_news_sm')
 
 #Load the list of construction terms into a spaCy Doc object
 with open('construction_terms.txt', 'r', encoding='utf-8') as file:
