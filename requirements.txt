@@ -4,4 +4,7 @@ llama-index
 nltk
 langdetect
 spacy
+os
+python -m spacy download sv_core_news_sm
+
 
