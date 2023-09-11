@@ -14,6 +14,8 @@ from llama_index import ServiceContext, LLMPredictor, OpenAIEmbedding, PromptHel
 from llama_index.llms import OpenAI
 from llama_index.text_splitter import TokenTextSplitter
 from llama_index.node_parser import SimpleNodeParser
+from spacy.matcher import PhraseMatcher
+
 
 
 import os 
@@ -30,10 +32,18 @@ try:
 except IOError:
     os.system("python -m spacy download sv_core_news_sm")
 
-#Load the list of construction terms into a spaCy Doc object
+# Read terms from file into a list
 with open('construction_terms.txt', 'r', encoding='utf-8') as file:
-    construction_terms_text = file.read()
-construction_terms_doc = nlp(construction_terms_text)
+    terms = [line.strip() for line in file]
+
+# Create pattern objects for each term
+patterns = [nlp.make_doc(text) for text in terms]
+
+# Initialize PhraseMatcher
+matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
+
+# Add the patterns to the matcher
+matcher.add("TerminologyList", patterns)
 
 
 st.markdown("""
@@ -115,9 +125,9 @@ def load_data():
             urls_data = [
                 'https://www.allabolag.se/5569418576/byggok-ab', 
                 'https://www.merinfo.se/foretag/Byggok-AB-5569418576/2k3vyvk-1ahbo', 
-                #'https://www.hitta.se/byggok+ab/kinna/llguyantu', 
-                #'https://www.bolagsfakta.se/5569418576-Byggok_AB', 
-                #'https://www.ratsit.se/5569418576-Byggok_AB'
+                'https://www.hitta.se/byggok+ab/kinna/llguyantu', 
+                'https://www.bolagsfakta.se/5569418576-Byggok_AB', 
+                'https://www.ratsit.se/5569418576-Byggok_AB'
             ]
             
             docs_with_urls = []
@@ -138,10 +148,10 @@ def load_data():
             
             embed_model = OpenAIEmbedding()
             node_parser = SimpleNodeParser.from_defaults(
-              text_splitter=TokenTextSplitter(chunk_size=4096, chunk_overlap=248)
+              text_splitter=TokenTextSplitter(chunk_size=1024, chunk_overlap=248)
             )
             prompt_helper = PromptHelper(
-              context_window=4096, 
+              context_window=1024, 
               num_output=2048, 
               chunk_overlap_ratio=0.1, 
               chunk_size_limit=None
@@ -179,13 +189,13 @@ def validate_response(response):
     # Check if the response is in Swedish
     if detect(response) != 'sv':
         response = "Jag kan tyvärr endast svara på frågor på svenska. Vänligen ställ din fråga på svenska."
-        
-    # Check semantic similarity with the list of construction terms
+
+    # Check the presence of construction terms in the response using the PhraseMatcher
     response_doc = nlp(response)
-    similarity_score = construction_terms_doc.similarity(response_doc)
-    if similarity_score < 0.75:  # Adjust threshold as needed
+    matches = matcher(response_doc)
+    if not matches:
         response = "Jag är här för att svara på frågor som rör bygg och konstruktion. Vänligen ställ en relevant fråga."
-    
+
     return response
 
 
