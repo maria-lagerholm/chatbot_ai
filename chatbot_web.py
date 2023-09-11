@@ -17,6 +17,9 @@ from llama_index.node_parser import SimpleNodeParser
 
 import spacy
 
+if not os.path.exists(spacy.util.get_package_path("sv_core_news_sm")):
+    os.system("python -m spacy download sv_core_news_sm")
+
 nlp = spacy.load('sv_core_news_sm')
 
 #Load the list of construction terms into a spaCy Doc object
