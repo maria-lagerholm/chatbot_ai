@@ -729,7 +729,6 @@ konstruktionen
 bedöma
 dess status
 åtgärder
-komma till rätta
 problemet
 lufttäthetsmätning
 byggnader
@@ -792,13 +791,7 @@ fuktproblem
 allvarliga skador
 hälsorisker
 utredning
-det första enkla steget
 fukthalten
-bedöma
-dess status
-åtgärder
-komma till rätta
-problemet
 lufttäthetsmätning
 byggnader
 mångårig erfarenhet
