@@ -124,10 +124,10 @@ def load_data():
             
             urls_data = [
                 'https://www.allabolag.se/5569418576/byggok-ab', 
-                'https://www.merinfo.se/foretag/Byggok-AB-5569418576/2k3vyvk-1ahbo', 
-                'https://www.hitta.se/byggok+ab/kinna/llguyantu', 
+                #'https://www.merinfo.se/foretag/Byggok-AB-5569418576/2k3vyvk-1ahbo', 
+                #'https://www.hitta.se/byggok+ab/kinna/llguyantu', 
                 'https://www.bolagsfakta.se/5569418576-Byggok_AB', 
-                'https://www.ratsit.se/5569418576-Byggok_AB'
+                #'https://www.ratsit.se/5569418576-Byggok_AB'
             ]
             
             docs_with_urls = []
@@ -144,7 +144,7 @@ def load_data():
 
 
             system_prompt=("You are a friendly chatbot assistant for a Swedish construction company website.")
-            llm = OpenAI(model="gpt-4", temperature=0, max_tokens=1024, system_prompt=system_prompt)
+            llm = OpenAI(model="gpt-3.5-turbo", temperature=0, max_tokens=1024, system_prompt=system_prompt)
             
             embed_model = OpenAIEmbedding()
             node_parser = SimpleNodeParser.from_defaults(
@@ -186,7 +186,7 @@ def validate_response(response):
     if any(char.isdigit() for char in response):  
         response += " Observera: Jag är en AI-chatbot som ger en grundläggande översikt över företaget. Informationen kan variera och vara opålitlig."
 
-    # Check if the response is in Swedish
+     #Check if the response is in Swedish
     if detect(response) != 'sv':
         response = "Jag kan tyvärr endast svara på frågor på svenska. Vänligen ställ din fråga på svenska."
 
