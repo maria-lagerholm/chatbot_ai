@@ -172,12 +172,12 @@ def load_data():
 
 
 
-#index = load_data()
+index = load_data()
 
 # rebuild storage context
-storage_context = StorageContext.from_defaults(persist_dir='./storage')
+#storage_context = StorageContext.from_defaults(persist_dir='./storage')
 # load index
-index = load_index_from_storage(storage_context)
+#index = load_index_from_storage(storage_context)
 
 chat_engine = index.as_chat_engine(chat_mode="context", verbose=True, temperature=0, memory=memory)
 
