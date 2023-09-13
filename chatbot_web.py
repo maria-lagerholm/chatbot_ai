@@ -11,6 +11,7 @@ from pathlib import Path
 from llama_index import download_loader
 
 from llama_index import ServiceContext, LLMPredictor, OpenAIEmbedding, PromptHelper
+from llama_index import StorageContext, load_index_from_storage
 from llama_index.llms import OpenAI
 from llama_index.text_splitter import TokenTextSplitter
 from llama_index.node_parser import SimpleNodeParser
@@ -19,6 +20,9 @@ from spacy.matcher import PhraseMatcher
 
 
 import os 
+
+
+
 
 # Check if spacy is installed
 try:
@@ -74,7 +78,7 @@ st.write('<style>div.block-container{padding-top:0rem;}</style>', unsafe_allow_h
 
 
 
-memory = ChatMemoryBuffer.from_defaults()#token_limit=1024)
+memory = ChatMemoryBuffer.from_defaults(token_limit=1024)
 
 # Initialize message history
 openai.api_key = st.secrets.openai_key
@@ -111,9 +115,6 @@ if "messages" not in st.session_state.keys(): # Initialize the chat message hist
 
 
 
-
-
-
 @st.cache_resource(show_spinner=False)
 def load_data():
     with st.spinner(text="Vänligen vänta"):
@@ -124,10 +125,10 @@ def load_data():
             
             urls_data = [
                 'https://www.allabolag.se/5569418576/byggok-ab', 
-                #'https://www.merinfo.se/foretag/Byggok-AB-5569418576/2k3vyvk-1ahbo', 
-                #'https://www.hitta.se/byggok+ab/kinna/llguyantu', 
+                'https://www.merinfo.se/foretag/Byggok-AB-5569418576/2k3vyvk-1ahbo', 
+                'https://www.hitta.se/byggok+ab/kinna/llguyantu', 
                 'https://www.bolagsfakta.se/5569418576-Byggok_AB', 
-                #'https://www.ratsit.se/5569418576-Byggok_AB'
+                'https://www.ratsit.se/5569418576-Byggok_AB'
             ]
             
             docs_with_urls = []
@@ -144,24 +145,21 @@ def load_data():
 
 
             system_prompt=("You are a friendly chatbot assistant for a Swedish construction company website.")
-            llm = OpenAI(model="gpt-3.5-turbo", temperature=0, max_tokens=1024, system_prompt=system_prompt)
+            
+            llm = OpenAI(model="gpt-4", temperature=0, max_tokens=512, system_prompt=system_prompt)
             
             embed_model = OpenAIEmbedding()
+            
             node_parser = SimpleNodeParser.from_defaults(
-              text_splitter=TokenTextSplitter(chunk_size=1024, chunk_overlap=248)
+              text_splitter=TokenTextSplitter(chunk_size=512, chunk_overlap=128)
             )
-            prompt_helper = PromptHelper(
-              context_window=1024, 
-              num_output=2048, 
-              chunk_overlap_ratio=0.1, 
-              chunk_size_limit=None
-            )
+           
 
             service_context = ServiceContext.from_defaults(
               llm=llm,
               embed_model=embed_model,
               node_parser=node_parser,
-              prompt_helper=prompt_helper
+              
             )
 
 
@@ -174,8 +172,14 @@ def load_data():
 
 
 
-index = load_data()
-chat_engine = index.as_chat_engine(chat_mode="context", temperature=0, memory=memory, verbose=True)
+#index = load_data()
+
+# rebuild storage context
+storage_context = StorageContext.from_defaults(persist_dir='./storage')
+# load index
+index = load_index_from_storage(storage_context)
+
+chat_engine = index.as_chat_engine(chat_mode="context", verbose=True, temperature=0, memory=memory)
 
 def validate_response(response):
     default_response = "Hej, jag är en AI-assistent. Hur kan jag hjälpa dig?"
@@ -198,7 +202,33 @@ def validate_response(response):
 
     return response
 
+#animation
+import json
+import requests
+from streamlit_lottie import st_lottie
 
+# Fetch the animation JSON
+url = requests.get("https://lottie.host/822ac1bc-dc68-4c90-92f3-73ae9700ab52/WP9AChIbpE.json")
+url_json = dict()
+if url.status_code == 200:
+    url_json = url.json()
+else:
+    print("Error in URL")
+
+# Create columns to organize layout
+col1, col2, col3 = st.columns([1, 2, 1])
+
+# Display the lottie animation with dynamic height and width in the center column
+with col2:
+    st_lottie(url_json,
+              reverse=True,
+              height='100%',  
+              width='100%',
+              speed=1,
+              loop=True,
+              quality='high',
+              key='Car'
+              )
 
 
 
