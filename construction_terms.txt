@@ -577,7 +577,6 @@ trossbottnar
 vattenskadeprevention
 övertryckskammare
 Besiktningar
-Byggok AB
 entreprenadbesiktningar
 byggherrar
 entreprenörer
@@ -593,7 +592,6 @@ elsystem
 VVS-system
 utlåtande
 fortlöpande besiktning
-realtid
 kontrollbesiktning
 slutbesiktning
 byggnormer
@@ -601,7 +599,6 @@ kompletterande besiktning
 carport
 efterbesiktning
 garantibesiktning
-försäkringspremier
 särskild besiktning
 entreprenadtidens utgång
 prestanda
@@ -650,7 +647,6 @@ beställaren
 entreprenadens status
 17 års erfarenhet
 tio års erfarenhet
-naturligt val
 central del
 huvudsyfte
 projektet genomförs
@@ -680,13 +676,11 @@ försäkringspremier
 villkor
 skriftligt
 rekommendationer
-regelbundet
 systematiskt
 inspekterar
 övervakar
 problem
 avvikelser
-realtid
 viktiga aspekter
 projektet är färdigställt
 i bruk
@@ -708,7 +702,6 @@ garantibesiktning
 fram till
 besiktningstillfället
 ansvarig
-garantitiden
 syften
 påtalat
 funktion
@@ -727,7 +720,6 @@ mätningar
 fukthalten
 konstruktionen
 bedöma
-dess status
 åtgärder
 problemet
 lufttäthetsmätning
@@ -751,7 +743,6 @@ klimatskalet
 branschstandard
 omfattning
 åtgärdas
-naturligt val
 central del
 byggindustrins processer
 överenskomna krav
@@ -811,5 +802,3 @@ klimatskalet
 branschstandard
 omfattning
 åtgärdas
-ni
-du
