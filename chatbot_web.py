@@ -87,7 +87,6 @@ openai.api_key = st.secrets.openai_key
 
 # Suggested questions
 suggested_questions = [
-    "Kan ni berätta mer om de tjänster ni erbjuder?",
     "Vilka typer av besiktningar erbjuder ni?",
     "Vad är en statusbesiktning?"
     
@@ -215,34 +214,44 @@ if url.status_code == 200:
 else:
     print("Error in URL")
 
-# Create columns to organize layout
-col1, col2, col3 = st.columns([1, 2, 1])
+# Initialize columns
+left_column, right_column = st.columns([1, 1])
 
 # Display the lottie animation with dynamic height and width in the center column
-with col2:
+# Move the animation code to the right column
+
+with right_column:
+    url = requests.get("https://lottie.host/5ac21fad-dc31-4f5a-be50-2ff04beefeb5/cXDavOrqiu.json")
+    url_json = dict()
+    if url.status_code == 200:
+        url_json = url.json()
+    else:
+        print("Error in URL")
+
     st_lottie(url_json,
               reverse=True,
-              height='100%',  
-              width='100%',
+              height='50%',  
+              width='50%',
               speed=1,
               loop=True,
               quality='high',
               key='Car'
               )
 
+# Move your chat history to the left column
+with left_column:
 
+    # Display the chat history
+    for message in st.session_state.messages: 
+        with st.spinner("Vänligen vänta..."):
+            with st.chat_message(message["role"]):
+                st.write(message["content"])
 
-# Display the chat history
-for message in st.session_state.messages: 
-    with st.spinner("Vänligen vänta..."):
-        with st.chat_message(message["role"]):
-            st.write(message["content"])
-
-
+# Place the chat input outside the columns to avoid the error
 if prompt := st.chat_input("Din fråga"):
     with st.spinner("Vänligen vänta..."): 
         st.session_state.messages.append({"role": "user", "content": prompt})
-        st.experimental_rerun()  # Force a rerun to update the chat history
+        st.experimental_rerun()  
 
 # Pass query to chat engine and display response
 if st.session_state.messages and st.session_state.messages[-1]["role"] != "assistant":
@@ -253,4 +262,3 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] != "assis
             st.write(validated_response)
             message = {"role": "assistant", "content": validated_response}
             st.session_state.messages.append(message)
-
