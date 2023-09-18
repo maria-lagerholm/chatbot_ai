@@ -8,7 +8,7 @@ https://github.com/explosion/spacy-models/releases/download/sv_core_news_sm-3.6.
 faiss-cpu
 streamlit_lottie
 requests
-
+langchain
 
 
 
