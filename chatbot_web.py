@@ -1,118 +1,77 @@
+# Import necessary libraries and modules
 import streamlit as st
-from llama_index import VectorStoreIndex, ServiceContext, Document
-from llama_index.llms import OpenAI
-import openai
-from llama_index import SimpleDirectoryReader
-from llama_index import BeautifulSoupWebReader
-from llama_index.memory import ChatMemoryBuffer
+from llama_index import (
+    VectorStoreIndex, ServiceContext, Document, SimpleDirectoryReader, 
+    BeautifulSoupWebReader, ChatMemoryBuffer, LLMPredictor, OpenAIEmbedding,
+    PromptHelper, StorageContext, load_index_from_storage, OpenAI,
+    TokenTextSplitter, SimpleNodeParser
+)
 from langdetect import detect
-
 from pathlib import Path
 from llama_index import download_loader
-
-from llama_index import ServiceContext, LLMPredictor, OpenAIEmbedding, PromptHelper
-from llama_index import StorageContext, load_index_from_storage
-from llama_index.llms import OpenAI
-from llama_index.text_splitter import TokenTextSplitter
-from llama_index.node_parser import SimpleNodeParser
 from spacy.matcher import PhraseMatcher
+import os
+import openai
+import requests
+from streamlit_lottie import st_lottie
 
-
-
-import os 
-
-
-
-
-# Check if spacy is installed
+# Check if spacy is installed and download the model if not already installed
 try:
     import spacy
-except ModuleNotFoundError:
-    os.system("pip install spacy")
-
-# Download the model if not already installed
-try:
     nlp = spacy.load("sv_core_news_sm")
-except IOError:
+except (ModuleNotFoundError, IOError):
+    os.system("pip install spacy")
     os.system("python -m spacy download sv_core_news_sm")
 
-# Read terms from file into a list
+# Read terms from a file into a list and create pattern objects for each term
 with open('construction_terms.txt', 'r', encoding='utf-8') as file:
     terms = [line.strip() for line in file]
+    patterns = [nlp.make_doc(text) for text in terms]
 
-# Create pattern objects for each term
-patterns = [nlp.make_doc(text) for text in terms]
-
-# Initialize PhraseMatcher
+# Initialize PhraseMatcher with patterns
 matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
-
-# Add the patterns to the matcher
 matcher.add("TerminologyList", patterns)
 
-
+# Streamlit UI Customization
 st.markdown("""
             <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-            
-    .reportview-container h1 {
-        font-size: 1.5em;
-        color: #0e3b62; 
-        text-align: center;
-        padding: 1em;
-        background: #f1f1f1; 
-        border-radius: 10px;
-        border: 1px solid #ccc;
-        box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
-    }
+            #MainMenu, footer, header {visibility: hidden;}
+            .reportview-container h1 {
+                font-size: 1.5em;
+                color: #0e3b62; 
+                text-align: center;
+                padding: 1em;
+                background: #f1f1f1; 
+                border-radius: 10px;
+                border: 1px solid #ccc;
+                box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+            }
 </style>
 """, unsafe_allow_html=True)
-
-
 st.write('<style>div.block-container{padding-top:0rem;}</style>', unsafe_allow_html=True)
 
-
-
-
-
-
-
+# Initialize the chatbot
 memory = ChatMemoryBuffer.from_defaults(token_limit=1024)
-
-# Initialize message history
 openai.api_key = st.secrets.openai_key
 
-
-
-# Suggested questions
+# Display header and suggested questions
+st.header("Chatta med vår AI-assistent")
 suggested_questions = [
     "Vilka typer av besiktningar erbjuder ni?",
     "Vad är en statusbesiktning?"
-    
 ]
-
-
-st.header("Chatta med vår AI-assistent")
 cols = st.columns(2)
 for idx, question in enumerate(suggested_questions):
-    if idx % 2 == 0:
-        col = cols[0]
-    else:
-        col = cols[1]
-    
+    col = cols[idx % 2]
     if col.button(question, key=f"main_{idx}"):
         st.session_state.messages.append({"role": "user", "content": question})
 
-
-if "messages" not in st.session_state.keys(): # Initialize the chat message history
-
+# Initialize chat history
+if "messages" not in st.session_state.keys():
     st.session_state.messages = [
         {"role": "assistant", "content": "Hej! Hur kan jag hjälpa dig?"}
     ]
-
-
-
+# Load data
 
 @st.cache_resource(show_spinner=False)
 def load_data():
@@ -218,7 +177,7 @@ else:
 left_column, right_column = st.columns([1, 1])
 
 # Display the lottie animation with dynamic height and width in the center column
-# Move the animation code to the right column
+# Move the animation  to the right column
 
 with right_column:
     url = requests.get("https://lottie.host/5ac21fad-dc31-4f5a-be50-2ff04beefeb5/cXDavOrqiu.json")
@@ -238,7 +197,7 @@ with right_column:
               key='Car'
               )
 
-# Move your chat history to the left column
+# Move  chat history to the left column
 with left_column:
 
     # Display the chat history
@@ -247,7 +206,7 @@ with left_column:
             with st.chat_message(message["role"]):
                 st.write(message["content"])
 
-# Place the chat input outside the columns to avoid the error
+# Place the chat input outside the columns
 if prompt := st.chat_input("Din fråga"):
     with st.spinner("Vänligen vänta..."): 
         st.session_state.messages.append({"role": "user", "content": prompt})
