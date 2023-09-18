@@ -1,4 +1,4 @@
-# Import necessary libraries and modules
+# Import libraries and modules
 import streamlit as st
 from llama_index import (
     VectorStoreIndex, ServiceContext, Document, SimpleDirectoryReader, 
