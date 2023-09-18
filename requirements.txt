@@ -1,6 +1,7 @@
 streamlit
 openai
 llama-index==0.8.20
+--upgrade langchain
 nltk
 langdetect
 spacy
