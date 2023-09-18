@@ -1,7 +1,7 @@
 streamlit
 langchain==0.0.293
 openai
-llama-index==0.8.29
+llama-index==0.8.24
 nltk
 langdetect
 spacy
