@@ -268,3 +268,88 @@ Vi arbetar med både privat- och företagskunder.
 Byggok AB
 Mariebergsvägen 33
 511 57 Kinna
+
+{
+  "företag": {
+    "namn": "Byggok AB",
+    "organisationsnummer": "556941-8576",
+    "juridiskt_namn": "Byggok AB",
+    "registreringsår": 2013,
+    "bolagsform": "Aktiebolag",
+    "momsregistrerad": "Ja",
+    "arbetsgivaravgift_registrerad": "Ja",
+    "F-skatt_registrerad": "Ja",
+    "adress": {
+      "gata": "Mariebergsvägen 33",
+      "postnummer": "511 57",
+      "stad": "Kinna"
+    },
+    "kontakt": {
+      "telefon": "070-687 10 06"
+    },
+    "verkställande_direktör": {
+      "namn": "Leif Gunnar Kristoffer Lagerholm",
+      "titel": "Verkställande direktör"
+    },
+    "styrelse": [
+      {
+        "namn": "Leif Gunnar Kristoffer Lagerholm",
+        "titel": "Ledamot"
+      }
+    ],
+    "verksamhet": {
+      "beskrivning": "Teknisk konsultation inom bygg. Utredningar inom byggnadsfysik, lufttäthetsmätningar i byggnader, fuktutredningar, termografering. Kontrollansvarig och projektledning. Köp och förvaltning av fastigheter.",
+      "bransch": "Teknisk konsultverksamhet inom bygg- och anläggningsteknik",
+      "branschkod": "71121",
+      "relaterade_branscher": ["Konsulter", "Teknikkonsulter", "Byggentreprenader-Infrastruktur"]
+    },
+    "ekonomi": {
+      "valuta": "SEK",
+      "omsättning": {
+        "2022": 3427,
+        "2021": 4760,
+        "2020": 3747
+      },
+      "resultat_efter_finansiella_poster": {
+        "2022": 318,
+        "2021": 707,
+        "2020": 296
+      },
+      "årets_resultat": {
+        "2022": 253,
+        "2021": 561,
+        "2020": 231
+      },
+      "totala_tillgångar": {
+        "2022": 1808,
+        "2021": 2678,
+        "2020": 1896
+      },
+      "eget_kapital": {
+        "2022": 1148,
+        "2021": 1795,
+        "2020": 1235
+      },
+      "nyckeltal": {
+        "kassalikviditet": {
+          "2022": 249.9,
+          "2021": 285.3
+        },
+        "vinstmarginal": {
+          "2022": 9.3,
+          "2021": 14.9
+        },
+        "soliditet": {
+          "2022": 63.5,
+          "2021": 67
+        }
+      }
+    },
+    "anställda": {
+      "antal": 3
+    },
+    "aktiekapital": 50000,
+    "omsättningsintervall": "3000 - 4999 tkr"
+  }
+}
+
