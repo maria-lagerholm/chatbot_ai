@@ -8,7 +8,14 @@
 ## 🌐 [Live Demo](https://chatbot-web.streamlit.app/)
 
 ## 📚 Overview
-`chatbot_ai` is a Swedish-speaking chatbot application developed using **LlamaIndex** and **GPT-4**. It is designed to understand and respond in Swedish, providing a seamless interaction experience for users. The application is built with **Streamlit**, making it lightweight and easy to deploy.
+
+A “chatbot_ai” is a Swedish-speaking application designed to provide native Swedish speakers with a fast and informative interaction experiences. The client aimed to offer an intuitive platform that fluently understands and responds in Swedish and only answers relevant to construction engineering questions.
+
+Utilising **LlamaIndex** and  **GPT-4** LLM, this chatbot effectively grasped the nuances of the Swedish language while delivering accurate responses. It also uses the Swedish-trained **SpaCy** model to make sure that the conversation is relevant to construction engineering. I integrated these technologies, with a focus on optimising LlamaIndex for precision and leveraging GPT-4 LLM for enhanced conversational capabilities. The application was constructed using **Streamlit**, selected for its lightweight properties and straightforward deployment process, a smooth launch and reliable performance. It accesses webpages like hitta.se and allabolag.se to provide the customer with the most recent information about the company in question. Other training information is provided in TXT and CSV files containing companies reports and other relevant documents.
+
+Upon completion, “chatbot_ai” received positive feedback for its user-friendly interface with a friendly **Lottie** animation and accurate language processing, meeting the client’s objective of creating a tool that resonates with Swedish speakers by providing fast and engaging interactions.
+
+![Examaple screenshot](https://imgur.com/c8w8T7r.png)
 
 ## 📂 Supported Data Formats
 The chatbot supports various data formats for its knowledge base:
