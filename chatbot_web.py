@@ -17,12 +17,7 @@ from llama_index.text_splitter import TokenTextSplitter
 from llama_index.node_parser import SimpleNodeParser
 from spacy.matcher import PhraseMatcher
 
-
-
 import os 
-
-
-
 
 # Check if spacy is installed
 try:
