@@ -1,0 +1,13 @@
+name: Trigger Probe of Deployed App on a CRON Schedule
+on:
+  schedule:
+    - cron: '0 */48 * * *'  # Runs every 2 days
+
+jobs:
+  probe_deployed_app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Probe Deployed App Action Step
+        run: node ./probe.js  # path to probe.js script
