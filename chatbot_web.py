@@ -75,8 +75,17 @@ st.write('<style>div.block-container{padding-top:0rem;}</style>', unsafe_allow_h
 
 memory = ChatMemoryBuffer.from_defaults(token_limit=1024)
 
-# Initialize message history
-openai.api_key = st.secrets.openai_key
+# Attempt to load the API key from Streamlit's secrets
+openai_api_key = st.secrets.get("openai_key", None)
+
+# Debugging statement to check if the API key is loaded
+if openai_api_key is not None:
+    st.info("API Key loaded successfully.")  # Use st.info for UI display
+else:
+    st.error("Failed to load API Key. Please check your configuration.")  # Display an error in the UI
+
+# Set the OpenAI API key
+openai.api_key = openai_api_key
 
 
 
