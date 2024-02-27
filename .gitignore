@@ -1,6 +1,0 @@
-# Other ignored files and directories
-node_modules/
-dist/
-
-# Ignore the secrets.toml file
-secrets.toml
