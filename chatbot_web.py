@@ -109,13 +109,14 @@ if "messages" not in st.session_state.keys(): # Initialize the chat message hist
     ]
 
 
-
-
 @st.cache_resource(show_spinner=False)
 def load_data():
+    print("Debug: Inside load_data function")
     with st.spinner(text="Vänligen vänta"):
         try:
-            reader_txt = SimpleDirectoryReader(input_dir="./data", recursive=True)
+            # Add debug print statements before each major operation
+            print("Debug: Before loading data")
+                       reader_txt = SimpleDirectoryReader(input_dir="./data", recursive=True)
             docs = reader_txt.load_data()
             reader_url = BeautifulSoupWebReader()
             
@@ -161,10 +162,16 @@ def load_data():
 
 
             index = VectorStoreIndex.from_documents(docs + docs_with_urls + csvs, service_context=service_context)
+           
+            print("Debug: Data loaded successfully, before returning index")
+
+            # Your existing return statement
             return index
         except Exception as e:
             st.error(f"Ett fel inträffade: {e}")
+            print("Debug: Exception occurred in load_data:", e)  # New print statement to catch exceptions
             return None
+
 
 
 
@@ -175,7 +182,6 @@ index = load_data()
 # load index
 #index = load_index_from_storage(storage_context)
 
-print("Debug: index object before calling as_chat_engine:", index)
 chat_engine = index.as_chat_engine(chat_mode="context", verbose=True, temperature=0, memory=memory)
 
 def validate_response(response):
