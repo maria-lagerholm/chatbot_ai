@@ -19,8 +19,6 @@ from spacy.matcher import PhraseMatcher
 
 import os 
 
-
-
 # Check if spacy is installed
 try:
     import spacy
@@ -115,19 +113,10 @@ if "messages" not in st.session_state.keys(): # Initialize the chat message hist
 def load_data():
     with st.spinner(text="Vänligen vänta"):
         try:
-            # Define the custom path for the loaders directory
-            custom_path = "loaders"  
-            
-            # Ensure the directory exists
-            os.makedirs(custom_path, exist_ok=True)
-            
-            # Adjusting SimpleDirectoryReader to use custom_path for reading data
-            reader_txt = SimpleDirectoryReader(input_dir=f"{custom_path}/data", recursive=True)
+            reader_txt = SimpleDirectoryReader(input_dir="./data", recursive=True)
             docs = reader_txt.load_data()
-
             reader_url = BeautifulSoupWebReader()
             
-            # Load data from URLs
             urls_data = [
                 'https://www.allabolag.se/5569418576/byggok-ab', 
                 'https://www.merinfo.se/foretag/Byggok-AB-5569418576/2k3vyvk-1ahbo', 
@@ -143,22 +132,28 @@ def load_data():
                     doc.metadata = {"source_url": url}
                     docs_with_urls.append(doc)
             
-            
-            SimpleCSVReader = download_loader("SimpleCSVReader", custom_path=f"{custom_path}/downloaded_models")
-            
-            loader_csv = SimpleCSVReader(encoding="utf-8") 
-            csvs = loader_csv.load_data(file=Path(f'{custom_path}/data/2023-Provtryckning-och-fukt-planering-2022-PLANERING.csv'))
+            SimpleCSVReader = download_loader("SimpleCSVReader")
 
-            system_prompt = ("You are a friendly chatbot assistant for a Swedish construction company website.")
+            loader_csv = SimpleCSVReader(encoding="utf-8") #input_dir="./data", 
+            csvs = loader_csv.load_data(file=Path('./data/2023-Provtryckning-och-fukt-planering-2022-PLANERING.csv'))
+
+
+            system_prompt=("You are a friendly chatbot assistant for a Swedish construction company website.")
+            
             llm = OpenAI(model="gpt-4", temperature=0, max_tokens=512, system_prompt=system_prompt)
+            
             embed_model = OpenAIEmbedding()
+            
             node_parser = SimpleNodeParser.from_defaults(
               text_splitter=TokenTextSplitter(chunk_size=512, chunk_overlap=128)
             )
+           
+
             service_context = ServiceContext.from_defaults(
               llm=llm,
               embed_model=embed_model,
               node_parser=node_parser,
+              
             )
 
 
