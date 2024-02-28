@@ -109,58 +109,25 @@ if "messages" not in st.session_state.keys(): # Initialize the chat message hist
     ]
 
 
+
+
 @st.cache_resource(show_spinner=False)
 def load_data():
-    print("Debug: Inside load_data function")
-    with st.spinner(text="Vänligen vänta"):
-        try:
-            print("Debug: Before loading data")
-            
-            # Initialize SimpleDirectoryReader
-            reader_txt = SimpleDirectoryReader(input_dir="./data", recursive=True)
-            docs = reader_txt.load_data()
-            print("Debug: Loaded docs from directory")
-            
-            # Initialize BeautifulSoupWebReader for URLs
-            reader_url = BeautifulSoupWebReader()
-          
-            
-            docs_with_urls = []
-            for url in urls_data:
-                url_docs = reader_url.load_data(urls=[url])
-                for doc in url_docs:
-                    doc.metadata = {"source_url": url}
-                    docs_with_urls.append(doc)
-            print("Debug: Loaded docs from URLs")
-            
-            # Initialize SimpleCSVReader
-            SimpleCSVReader = download_loader("SimpleCSVReader")
-            loader_csv = SimpleCSVReader(encoding="utf-8")
-            csvs = loader_csv.load_data(file=Path('./data/2023-Provtryckning-och-fukt-planering-2022-PLANERING.csv'))
-            print("Debug: Loaded CSV data")
-            
-            # Setting up the chat engine components
-            system_prompt = "You are a friendly chatbot assistant for a Swedish construction company website."
-            llm = OpenAI(model="gpt-4", temperature=0, max_tokens=512, system_prompt=system_prompt)
-            embed_model = OpenAIEmbedding()
-            node_parser = SimpleNodeParser.from_defaults(text_splitter=TokenTextSplitter(chunk_size=512, chunk_overlap=128))
-            service_context = ServiceContext.from_defaults(llm=llm, embed_model=embed_model, node_parser=node_parser)
-            
-            # Combining documents and creating the index
-            index = VectorStoreIndex.from_documents(docs + docs_with_urls + csvs, service_context=service_context)
-            print("Debug: Data loaded successfully, index created")
-            
-            return index
-        except Exception as e:
-            st.error(f"Ett fel inträffade: {e}")
-            print("Debug: Exception occurred in load_data:", e)
-            return None
-
-
-
-
+    try:
+        print("Debug: Inside simplified load_data function")
+        # This is a placeholder object for testing purposes
+        index = "Test Index Object"
+        return index
+    except Exception as e:
+        st.error(f"Ett fel inträffade: {e}")
+        print("Debug: Exception occurred in simplified load_data:", e)
+        return None
 
 index = load_data()
+print("Debug: index object after simplified load_data():", index)
+
+
+
 
 # rebuild storage context
 #storage_context = StorageContext.from_defaults(persist_dir='./storage')
