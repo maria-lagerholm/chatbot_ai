@@ -32,7 +32,7 @@ Credentials required for the application are securely stored in the `secrets.tom
 `chatbot_ai` is deployed on **Streamlit Community Cloud**.
 
 ## 🔗 Access the Web App
-The application is accessible online. Visit [chatbot-web.streamlit.app](https://chatbot-web.streamlit.app/) to interact with `chatbot_ai`.
+The application is accessible online. Visit [chatbot-web.streamlit.app](https://chatbotai-jbllqb5zwnzapp4fw3f7qg.streamlit.app/) to interact with the ChatBot.
 
 ## 🚀 Quick Start
 1. Clone the repository
