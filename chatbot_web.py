@@ -175,6 +175,7 @@ index = load_data()
 # load index
 #index = load_index_from_storage(storage_context)
 
+print("Debug: index object before calling as_chat_engine:", index)
 chat_engine = index.as_chat_engine(chat_mode="context", verbose=True, temperature=0, memory=memory)
 
 def validate_response(response):
