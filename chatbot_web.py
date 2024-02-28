@@ -115,9 +115,30 @@ if "messages" not in st.session_state.keys(): # Initialize the chat message hist
 def load_data():
     with st.spinner(text="Vänligen vänta"):
         try:
-            reader_txt = SimpleDirectoryReader(input_dir="./data", recursive=True)
-            docs = reader_txt.load_data()
+         
+            reader_url = BeautifulSoupWebReader()
             
+            urls_data = [
+                'https://www.allabolag.se/5569418576/byggok-ab', 
+                'https://www.merinfo.se/foretag/Byggok-AB-5569418576/2k3vyvk-1ahbo', 
+                'https://www.hitta.se/byggok+ab/kinna/llguyantu', 
+                'https://www.bolagsfakta.se/5569418576-Byggok_AB', 
+                'https://www.ratsit.se/5569418576-Byggok_AB'
+            ]
+            
+            docs_with_urls = []
+            for url in urls_data:
+                url_docs = reader_url.load_data(urls=[url])
+                for doc in url_docs:
+                    doc.metadata = {"source_url": url}
+                    docs_with_urls.append(doc)
+            
+            SimpleCSVReader = download_loader("SimpleCSVReader")
+
+            loader_csv = SimpleCSVReader(encoding="utf-8") #input_dir="./data", 
+            csvs = loader_csv.load_data(file=Path('./data/2023-Provtryckning-och-fukt-planering-2022-PLANERING.csv'))
+
+
             system_prompt=("You are a friendly chatbot assistant for a Swedish construction company website.")
             
             llm = OpenAI(model="gpt-4", temperature=0, max_tokens=512, system_prompt=system_prompt)
