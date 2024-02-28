@@ -113,28 +113,76 @@ if "messages" not in st.session_state.keys(): # Initialize the chat message hist
 
 @st.cache_resource(show_spinner=False)
 def load_data():
-    try:
-        print("Debug: Inside simplified load_data function")
-        # This is a placeholder object for testing purposes
-        index = "Test Index Object"
-        return index
-    except Exception as e:
-        st.error(f"Ett fel inträffade: {e}")
-        print("Debug: Exception occurred in simplified load_data:", e)
-        return None
+    with st.spinner(text="Vänligen vänta"):
+        try:
+            reader_txt = SimpleDirectoryReader(input_dir="./data", recursive=True)
+            docs = reader_txt.load_data()
+            reader_url = BeautifulSoupWebReader()
+            
+            urls_data = [
+                'https://www.allabolag.se/5569418576/byggok-ab', 
+                'https://www.merinfo.se/foretag/Byggok-AB-5569418576/2k3vyvk-1ahbo', 
+                'https://www.hitta.se/byggok+ab/kinna/llguyantu', 
+                'https://www.bolagsfakta.se/5569418576-Byggok_AB', 
+                'https://www.ratsit.se/5569418576-Byggok_AB'
+            ]
+            
+            docs_with_urls = []
+            for url in urls_data:
+                url_docs = reader_url.load_data(urls=[url])
+                for doc in url_docs:
+                    doc.metadata = {"source_url": url}
+                    docs_with_urls.append(doc)
+            
+            SimpleCSVReader = download_loader("SimpleCSVReader")
+
+            loader_csv = SimpleCSVReader(encoding="utf-8") #input_dir="./data", 
+            csvs = loader_csv.load_data(file=Path('./data/2023-Provtryckning-och-fukt-planering-2022-PLANERING.csv'))
+
+
+            system_prompt=("You are a friendly chatbot assistant for a Swedish construction company website.")
+            
+            llm = OpenAI(model="gpt-4", temperature=0, max_tokens=512, system_prompt=system_prompt)
+            
+            embed_model = OpenAIEmbedding()
+            
+            node_parser = SimpleNodeParser.from_defaults(
+              text_splitter=TokenTextSplitter(chunk_size=512, chunk_overlap=128)
+            )
+           
+
+            service_context = ServiceContext.from_defaults(
+              llm=llm,
+              embed_model=embed_model,
+              node_parser=node_parser,
+              
+            )
+
+
+
+            index = VectorStoreIndex.from_documents(docs + docs_with_urls + csvs, service_context=service_context)
+            return index
+        except Exception as e:
+            st.error(f"Ett fel inträffade: {e}")
+            return None
+
+
 
 index = load_data()
-print("Debug: index object after simplified load_data():", index)
+print("Debug: index object after load_data():", index)
 
+# Add these verification steps here
+assert index is not None, "Index is None"
+# Assuming `VectorStoreIndex` is the expected type of `index`
+assert isinstance(index, VectorStoreIndex), f"Unexpected type for index: {type(index)}"
 
-
+chat_engine = index.as_chat_engine(chat_mode="context", verbose=True, temperature=0, memory=memory)
 
 # rebuild storage context
 #storage_context = StorageContext.from_defaults(persist_dir='./storage')
 # load index
 #index = load_index_from_storage(storage_context)
 
-chat_engine = index.as_chat_engine(chat_mode="context", verbose=True, temperature=0, memory=memory)
 
 def validate_response(response):
     default_response = "Hej, jag är en AI-assistent. Hur kan jag hjälpa dig?"
