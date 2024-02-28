@@ -114,12 +114,15 @@ def load_data():
     print("Debug: Inside load_data function")
     with st.spinner(text="Vänligen vänta"):
         try:
-            # Add debug print statements before each major operation
             print("Debug: Before loading data")
-                       reader_txt = SimpleDirectoryReader(input_dir="./data", recursive=True)
-            docs = reader_txt.load_data()
-            reader_url = BeautifulSoupWebReader()
             
+            # Initialize SimpleDirectoryReader
+            reader_txt = SimpleDirectoryReader(input_dir="./data", recursive=True)
+            docs = reader_txt.load_data()
+            print("Debug: Loaded docs from directory")
+            
+            # Initialize BeautifulSoupWebReader for URLs
+            reader_url = BeautifulSoupWebReader()
             urls_data = [
                 'https://www.allabolag.se/5569418576/byggok-ab', 
                 'https://www.merinfo.se/foretag/Byggok-AB-5569418576/2k3vyvk-1ahbo', 
@@ -134,43 +137,31 @@ def load_data():
                 for doc in url_docs:
                     doc.metadata = {"source_url": url}
                     docs_with_urls.append(doc)
+            print("Debug: Loaded docs from URLs")
             
+            # Initialize SimpleCSVReader
             SimpleCSVReader = download_loader("SimpleCSVReader")
-
-            loader_csv = SimpleCSVReader(encoding="utf-8") #input_dir="./data", 
+            loader_csv = SimpleCSVReader(encoding="utf-8")
             csvs = loader_csv.load_data(file=Path('./data/2023-Provtryckning-och-fukt-planering-2022-PLANERING.csv'))
-
-
-            system_prompt=("You are a friendly chatbot assistant for a Swedish construction company website.")
+            print("Debug: Loaded CSV data")
             
+            # Setting up the chat engine components
+            system_prompt = "You are a friendly chatbot assistant for a Swedish construction company website."
             llm = OpenAI(model="gpt-4", temperature=0, max_tokens=512, system_prompt=system_prompt)
-            
             embed_model = OpenAIEmbedding()
+            node_parser = SimpleNodeParser.from_defaults(text_splitter=TokenTextSplitter(chunk_size=512, chunk_overlap=128))
+            service_context = ServiceContext.from_defaults(llm=llm, embed_model=embed_model, node_parser=node_parser)
             
-            node_parser = SimpleNodeParser.from_defaults(
-              text_splitter=TokenTextSplitter(chunk_size=512, chunk_overlap=128)
-            )
-           
-
-            service_context = ServiceContext.from_defaults(
-              llm=llm,
-              embed_model=embed_model,
-              node_parser=node_parser,
-              
-            )
-
-
-
+            # Combining documents and creating the index
             index = VectorStoreIndex.from_documents(docs + docs_with_urls + csvs, service_context=service_context)
-           
-            print("Debug: Data loaded successfully, before returning index")
-
-            # Your existing return statement
+            print("Debug: Data loaded successfully, index created")
+            
             return index
         except Exception as e:
             st.error(f"Ett fel inträffade: {e}")
-            print("Debug: Exception occurred in load_data:", e)  # New print statement to catch exceptions
+            print("Debug: Exception occurred in load_data:", e)
             return None
+
 
 
 
