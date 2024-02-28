@@ -132,7 +132,7 @@ def load_data():
                     doc.metadata = {"source_url": url}
                     docs_with_urls.append(doc)
             
-            SimpleCSVReader = download_loader("SimpleCSVReader")
+            SimpleCSVReader = download_loader("SimpleCSVReader", custom_path="loaders")
 
             loader_csv = SimpleCSVReader(encoding="utf-8") #input_dir="./data", 
             csvs = loader_csv.load_data(file=Path('./data/2023-Provtryckning-och-fukt-planering-2022-PLANERING.csv'))
