@@ -1,7 +1,7 @@
 streamlit==1.26.0
-openai==0.28.0
+openai==0.28.1
 llama-index==0.8.26
-langchain==0.0.286
+langchain==0.0.316
 nltk
 langdetect
 spacy
