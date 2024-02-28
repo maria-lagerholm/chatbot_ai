@@ -80,8 +80,6 @@ openai.api_key = st.secrets.openai_key
 
 
 
-
-
 # Suggested questions
 suggested_questions = [
     "Vilka typer av besiktningar erbjuder ni?",
@@ -115,7 +113,8 @@ if "messages" not in st.session_state.keys(): # Initialize the chat message hist
 def load_data():
     with st.spinner(text="Vänligen vänta"):
         try:
-         
+            reader_txt = SimpleDirectoryReader(input_dir="./data", recursive=True)
+            docs = reader_txt.load_data()
             reader_url = BeautifulSoupWebReader()
             
             urls_data = [
@@ -168,20 +167,13 @@ def load_data():
 
 
 index = load_data()
-print("Debug: index object after load_data():", index)
-
-# Add these verification steps here
-assert index is not None, "Index is None"
-# Assuming `VectorStoreIndex` is the expected type of `index`
-assert isinstance(index, VectorStoreIndex), f"Unexpected type for index: {type(index)}"
-
-chat_engine = index.as_chat_engine(chat_mode="context", verbose=True, temperature=0, memory=memory)
 
 # rebuild storage context
 #storage_context = StorageContext.from_defaults(persist_dir='./storage')
 # load index
 #index = load_index_from_storage(storage_context)
 
+chat_engine = index.as_chat_engine(chat_mode="context", verbose=True, temperature=0, memory=memory)
 
 def validate_response(response):
     default_response = "Hej, jag är en AI-assistent. Hur kan jag hjälpa dig?"
