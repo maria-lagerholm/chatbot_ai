@@ -11,5 +11,3 @@ streamlit_lottie
 requests
 
 
-
-
