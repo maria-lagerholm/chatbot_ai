@@ -4,7 +4,8 @@ llama-index==0.8.26
 langchain==0.0.286
 nltk
 langdetect
-spacy==3.6.1
+spacy
+https://github.com/explosion/spacy-models/releases/download/sv_core_news_sm-3.6.0/sv_core_news_sm-3.6.0.tar.gz
 faiss-cpu
 streamlit_lottie
 requests
