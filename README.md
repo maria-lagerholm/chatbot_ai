@@ -5,7 +5,7 @@
 ![Framework](https://img.shields.io/badge/Framework-Streamlit-orange)
 ![Model](https://img.shields.io/badge/Model-GPT--4-green)
 
-## 🌐 [Live Demo](https://chatbot-web.streamlit.app/)
+## 🌐 [Live Demo](https://chatbotai-jbllqb5zwnzapp4fw3f7qg.streamlit.app/)
 
 ## 📚 Overview
 
