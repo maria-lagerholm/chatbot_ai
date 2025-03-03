@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
-const TARGET_URL = "https://chatbot-web.streamlit.app/";
-const WAKE_UP_BUTTON_TEXT = "app back up";
+const TARGET_URL = "https://assistant-web.streamlit.app/";
+const WAKE_UP_BUTTON_TEXT = "Click to wake up";
 const PAGE_LOAD_GRACE_PERIOD_MS = 8000;
 
 (async () => {
