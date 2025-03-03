@@ -4,3 +4,4 @@ dist/
 
 # Ignore the secrets.toml file
 secrets.toml
+.venv/
